@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Playlists and saved searches are user-created and worth backing up. The video
+  catalog is a cache and re-syncs from the backend, so it is excluded.
+-->
+<full-backup-content>
+    <include domain="database" path="vera-video.db" />
+    <include domain="sharedpref" path="." />
+</full-backup-content>

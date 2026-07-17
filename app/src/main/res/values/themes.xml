@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The Compose theme in ui/theme does the real work; this exists so the
+      manifest has a theme before Compose starts. It must not carry an action
+      bar, since Compose draws its own.
+    -->
+    <style name="Theme.VeraVideo" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

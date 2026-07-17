@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vera-Video</string>
+
+    <!-- Navigation -->
+    <string name="nav_browse">Browse</string>
+    <string name="nav_searches">Searches</string>
+    <string name="nav_playlists">Playlists</string>
+
+    <!-- Browse / search -->
+    <string name="search_hint">Search videos</string>
+    <string name="clear_search">Clear search</string>
+    <string name="save_search">Save this search</string>
+    <string name="refresh">Refresh</string>
+    <string name="sort_newest">Newest first</string>
+    <string name="sort_oldest">Oldest first</string>
+    <string name="sort_longest">Longest first</string>
+    <string name="sort_title">Title (A–Z)</string>
+    <string name="filter_all_channels">All channels</string>
+    <string name="filter_channel_with_count">%1$s (%2$d)</string>
+    <string name="filter_clear">Clear</string>
+    <string name="filter_duration_short">Under 5 min</string>
+    <string name="filter_duration_medium">5–20 min</string>
+    <string name="filter_duration_long">Over 20 min</string>
+
+    <!-- Empty / error states -->
+    <string name="empty_catalog_title">No videos yet</string>
+    <string name="empty_catalog_body">Pull to refresh to fetch the catalog.</string>
+    <string name="empty_results_title">No matches</string>
+    <string name="empty_results_body">Try a different search or clear your filters.</string>
+    <string name="empty_searches_title">No saved searches</string>
+    <string name="empty_searches_body">Save a search from the Browse tab to keep it here.</string>
+    <string name="empty_playlists_title">No playlists</string>
+    <string name="empty_playlists_body">Add videos to a playlist to get started.</string>
+    <string name="empty_playlist_body">This playlist is empty.</string>
+    <string name="sync_failed">Couldn\'t reach the catalog. Showing saved videos.</string>
+
+    <!-- Playlists -->
+    <string name="new_playlist">New playlist</string>
+    <string name="playlist_name">Playlist name</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="play_all">Play all</string>
+    <string name="share_playlist">Share playlist</string>
+    <string name="share_truncated_notice">Sharing includes the first %1$d videos.</string>
+    <string name="share_video">Share video</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+    <string name="delete_playlist_title">Delete playlist?</string>
+    <string name="delete_playlist_body">“%1$s” will be removed. This can\'t be undone.</string>
+
+    <!-- Saved searches -->
+    <string name="save_search_title">Save search</string>
+    <string name="search_name">Name</string>
+    <string name="delete_search_title">Delete saved search?</string>
+
+    <!-- Player -->
+    <string name="now_playing">Now playing</string>
+    <string name="up_next">Up next</string>
+    <string name="previous_video">Previous video</string>
+    <string name="next_video">Next video</string>
+    <string name="open_in_youtube">Open in YouTube</string>
+    <string name="video_unavailable">This video is no longer available on YouTube.</string>
+
+    <!-- Content descriptions -->
+    <string name="thumbnail_of">Thumbnail for %1$s</string>
+    <string name="more_options">More options</string>
+    <string name="back">Back</string>
+</resources>
