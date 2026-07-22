@@ -26,6 +26,7 @@ import org.veraproject.veravideo.domain.SearchQuery
 import org.veraproject.veravideo.domain.SortOrder
 import org.veraproject.veravideo.domain.Video
 import org.veraproject.veravideo.ui.navigation.Routes
+import java.time.Instant
 import javax.inject.Inject
 
 data class BrowseUiState(
@@ -113,6 +114,13 @@ class BrowseViewModel @Inject constructor(
 
     fun onDurationFilterChange(min: Int?, max: Int?) =
         query.update { it.copy(minDurationSeconds = min, maxDurationSeconds = max) }
+
+    /**
+     * Sets the published-date window. Either bound may be null (open-ended); the
+     * date-range UI is responsible for keeping `before` at or after `after`.
+     */
+    fun onDateRangeChange(after: Instant?, before: Instant?) =
+        query.update { it.copy(publishedAfter = after, publishedBefore = before) }
 
     fun clearFilters() = query.update { SearchQuery(text = it.text) }
 

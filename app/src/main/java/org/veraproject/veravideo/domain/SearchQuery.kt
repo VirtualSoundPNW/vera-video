@@ -25,12 +25,14 @@ data class SearchQuery(
     val publishedBefore: Instant? = null,
     val sortOrder: SortOrder = SortOrder.NEWEST,
 ) {
+    val hasDateRange: Boolean
+        get() = publishedAfter != null || publishedBefore != null
+
     val hasFilters: Boolean
         get() = channelId != null ||
             minDurationSeconds != null ||
             maxDurationSeconds != null ||
-            publishedAfter != null ||
-            publishedBefore != null
+            hasDateRange
 
     val isEmpty: Boolean
         get() = text.isBlank() && !hasFilters

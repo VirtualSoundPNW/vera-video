@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.veraproject.veravideo.R
+import org.veraproject.veravideo.domain.SearchQuery
 import org.veraproject.veravideo.domain.SortOrder
+import org.veraproject.veravideo.util.formatDate
 
 /** Duration buckets offered as one-tap filters. */
 enum class DurationFilter(val labelRes: Int, val min: Int?, val max: Int?) {
@@ -38,6 +40,7 @@ fun FilterRow(
     onChannelSelected: (String?) -> Unit,
     onSortSelected: (SortOrder) -> Unit,
     onDurationSelected: (Int?, Int?) -> Unit,
+    onEditDateRange: () -> Unit,
     onClearFilters: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,6 +55,12 @@ fun FilterRow(
 
         item {
             ChannelChip(state = state, onChannelSelected = onChannelSelected)
+        }
+
+        if (state.query.hasDateRange) {
+            item {
+                DateRangeChip(query = state.query, onClick = onEditDateRange)
+            }
         }
 
         items(DurationFilter.entries.toList()) { filter ->
@@ -138,6 +147,26 @@ private fun ChannelChip(state: BrowseUiState, onChannelSelected: (String?) -> Un
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DateRangeChip(query: SearchQuery, onClick: () -> Unit) {
+    val after = query.publishedAfter
+    val before = query.publishedBefore
+    val label = when {
+        after != null && before != null ->
+            stringResource(R.string.date_range_chip_between, formatDate(after), formatDate(before))
+        after != null -> stringResource(R.string.date_range_chip_after, formatDate(after))
+        else -> stringResource(R.string.date_range_chip_before, formatDate(before!!))
+    }
+
+    FilterChip(
+        selected = true,
+        onClick = onClick,
+        label = { Text(label) },
+        trailingIcon = { Icon(Icons.Filled.ArrowDropDown, contentDescription = null) },
+    )
 }
 
 private fun SortOrder.labelRes(): Int = when (this) {

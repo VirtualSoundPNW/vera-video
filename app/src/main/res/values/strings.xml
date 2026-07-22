@@ -23,6 +23,31 @@
     <string name="filter_duration_medium">5–20 min</string>
     <string name="filter_duration_long">Over 20 min</string>
 
+    <!-- Overflow menu -->
+    <string name="menu_date_range">Search within date range</string>
+    <string name="menu_about">About the Vera Project</string>
+    <string name="menu_classes">Sign up for Vera Project classes</string>
+    <string name="menu_merch">Buy Vera Project merchandise</string>
+    <string name="menu_donate">Donate to the Vera Project</string>
+    <string name="menu_contact">Contact the Vera Project</string>
+    <string name="menu_email_info">Email us at info@theveraproject.org</string>
+    <string name="menu_booking">Professional booking inquiry</string>
+    <string name="link_failed">Couldn\'t open that — no app is available for it.</string>
+
+    <!-- Date-range picker -->
+    <string name="date_range_title">Date range</string>
+    <string name="date_range_explainer">Show videos published after the first date, before the second, or between the two.</string>
+    <string name="date_range_from">From (published after)</string>
+    <string name="date_range_to">To (published before)</string>
+    <string name="date_range_not_set">Any date</string>
+    <string name="date_range_pick_start">Published after</string>
+    <string name="date_range_pick_end">Published before</string>
+    <string name="date_range_ok">OK</string>
+    <string name="date_range_done">Done</string>
+    <string name="date_range_chip_between">%1$s – %2$s</string>
+    <string name="date_range_chip_after">After %1$s</string>
+    <string name="date_range_chip_before">Before %1$s</string>
+
     <!-- Empty / error states -->
     <string name="empty_catalog_title">No videos yet</string>
     <string name="empty_catalog_body">Pull to refresh to fetch the catalog.</string>
