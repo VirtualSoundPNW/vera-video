@@ -25,12 +25,13 @@
 
     <!-- Overflow menu -->
     <string name="menu_date_range">Search within date range</string>
+    <string name="menu_events">Upcoming Vera Project events</string>
     <string name="menu_about">About the Vera Project</string>
     <string name="menu_classes">Sign up for Vera Project classes</string>
     <string name="menu_merch">Buy Vera Project merchandise</string>
     <string name="menu_donate">Donate to the Vera Project</string>
     <string name="menu_contact">Contact the Vera Project</string>
-    <string name="menu_email_info">Email us at info@theveraproject.org</string>
+    <string name="menu_email_info">Email the Vera Project at info@theveraproject.org</string>
     <string name="menu_booking">Professional booking inquiry</string>
     <string name="link_failed">Couldn\'t open that — no app is available for it.</string>
 

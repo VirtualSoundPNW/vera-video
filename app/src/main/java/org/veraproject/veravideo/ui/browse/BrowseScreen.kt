@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContactPage
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
@@ -85,13 +86,14 @@ private fun webIntent(url: String) = Intent(Intent.ACTION_VIEW, url.toUri())
 private fun emailIntent(address: String) = Intent(Intent.ACTION_SENDTO, "mailto:$address".toUri())
 
 private val VERA_MENU_LINKS: List<MenuLink> = listOf(
-    MenuLink(R.string.menu_about, Icons.Filled.Info) { webIntent("https://theveraproject.org/about/") },
+    MenuLink(R.string.menu_events, Icons.Filled.Event) { webIntent("https://theveraproject.org/events/") },
     MenuLink(R.string.menu_classes, Icons.Filled.School) { webIntent("https://theveraproject.org/classes/") },
-    MenuLink(R.string.menu_merch, Icons.Filled.Storefront) { webIntent("https://theveraproject.bigcartel.com/products") },
     MenuLink(R.string.menu_donate, Icons.Filled.Favorite) { webIntent("https://theveraproject.org/donate/") },
+    MenuLink(R.string.menu_merch, Icons.Filled.Storefront) { webIntent("https://theveraproject.bigcartel.com/products") },
     MenuLink(R.string.menu_contact, Icons.Filled.ContactPage) { webIntent("https://theveraproject.org/about/contact/") },
     MenuLink(R.string.menu_email_info, Icons.Filled.Email) { emailIntent("info@theveraproject.org") },
     MenuLink(R.string.menu_booking, Icons.Filled.AlternateEmail) { emailIntent("booking@theveraproject.org") },
+    MenuLink(R.string.menu_about, Icons.Filled.Info) { webIntent("https://theveraproject.org/about/") },
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
