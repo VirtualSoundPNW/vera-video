@@ -207,6 +207,44 @@ class VideoDaoTest {
     }
 
     @Test
+    fun `filters by published-before bound`() = runTest {
+        dao.upsertAll(
+            listOf(
+                video("old", publishedAt = Instant.parse("2020-01-01T00:00:00Z")),
+                video("new", publishedAt = Instant.parse("2026-06-01T00:00:00Z")),
+            ),
+        )
+
+        assertThat(search(SearchQuery(publishedBefore = Instant.parse("2025-01-01T00:00:00Z"))))
+            .containsExactly("old")
+    }
+
+    // The "between" case the date-range picker produces. Both bounds are
+    // inclusive: the picker's upper bound is the last instant of the chosen day,
+    // so a video published any time that day still falls inside the window.
+    @Test
+    fun `filters by a two-sided published range inclusively`() = runTest {
+        dao.upsertAll(
+            listOf(
+                video("before", publishedAt = Instant.parse("2023-12-31T23:59:59Z")),
+                video("startEdge", publishedAt = Instant.parse("2024-01-01T00:00:00Z")),
+                video("inside", publishedAt = Instant.parse("2024-06-15T12:00:00Z")),
+                video("endEdge", publishedAt = Instant.parse("2024-12-31T23:59:59.999Z")),
+                video("after", publishedAt = Instant.parse("2025-01-01T00:00:00Z")),
+            ),
+        )
+
+        val results = search(
+            SearchQuery(
+                publishedAfter = Instant.parse("2024-01-01T00:00:00Z"),
+                publishedBefore = Instant.parse("2024-12-31T23:59:59.999Z"),
+            ),
+        )
+
+        assertThat(results).containsExactly("startEdge", "inside", "endEdge")
+    }
+
+    @Test
     fun `combines text search with filters`() = runTest {
         dao.upsertAll(
             listOf(
