@@ -1,0 +1,29 @@
+name: Dependency graph
+
+# Submits the fully resolved Gradle dependency graph to GitHub so Dependabot
+# alerts reflect what the build actually pulls. Without this, GitHub's graph can
+# go stale and flag transitive versions the build no longer resolves (e.g. netty
+# it never pulls, or an httpclient it has already upgraded past). Runs only on
+# main because the submitted graph becomes the source of truth for the default
+# branch, which is what the alerts are evaluated against.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v4
+
+      - uses: gradle/actions/dependency-submission@v6
