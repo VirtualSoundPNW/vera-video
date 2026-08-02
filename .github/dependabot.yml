@@ -5,7 +5,14 @@
 
 version: 2
 updates:
-  - package-ecosystem: "android" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # Gradle is the ecosystem for this Android app; "android" is not a valid
+  # Dependabot ecosystem, so version updates never ran under it.
+  - package-ecosystem: "gradle"
+    directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      # One PR per week for routine bumps rather than a swarm.
+      gradle-dependencies:
+        patterns:
+          - "*"
