@@ -1,0 +1,62 @@
+name: Release build
+
+# Produces a signed release APK. Runs on version tags (v1.2.3) and on demand.
+# Signing credentials come from repository secrets; the keystore itself is a
+# base64-encoded secret decoded to a temp file at run time. app/build.gradle.kts
+# reads them from the VERA_* environment variables.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v4
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Decode keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.VERA_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::VERA_KEYSTORE_BASE64 secret is empty or unset — cannot sign." >&2
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/vera-release.jks"
+          echo "VERA_KEYSTORE_FILE=$RUNNER_TEMP/vera-release.jks" >> "$GITHUB_ENV"
+
+      - name: Build signed release APK
+        env:
+          VERA_KEYSTORE_PASSWORD: ${{ secrets.VERA_KEYSTORE_PASSWORD }}
+          VERA_KEY_ALIAS: ${{ secrets.VERA_KEY_ALIAS }}
+          VERA_KEY_PASSWORD: ${{ secrets.VERA_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease --stacktrace
+
+      - name: Verify the APK is signed
+        run: |
+          apksigner="$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)"
+          "$apksigner" verify --print-certs app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload signed APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: vera-video-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+
+      - name: Clean up keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/vera-release.jks"
