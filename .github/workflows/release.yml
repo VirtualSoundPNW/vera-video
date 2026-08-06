@@ -1,16 +1,17 @@
 name: Release build
 
-# Produces a signed release APK. Runs on version tags (v1.2.3) and on demand.
-# Signing credentials come from repository secrets; the keystore itself is a
-# base64-encoded secret decoded to a temp file at run time. app/build.gradle.kts
-# reads them from the VERA_* environment variables.
+# Produces a signed release APK and AAB. Runs on version tags (v1.2.3) and on
+# demand. On a tag it also creates/updates a GitHub Release and attaches both
+# artifacts. Signing credentials come from repository secrets; the keystore
+# itself is a base64-encoded secret decoded to a temp file at run time.
+# app/build.gradle.kts reads them from the VERA_* environment variables.
 on:
   push:
     tags: ["v*"]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # needed to create the GitHub Release and upload assets
 
 jobs:
   release:
@@ -38,24 +39,49 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/vera-release.jks"
           echo "VERA_KEYSTORE_FILE=$RUNNER_TEMP/vera-release.jks" >> "$GITHUB_ENV"
 
-      - name: Build signed release APK
+      - name: Build signed release APK and AAB
         env:
           VERA_KEYSTORE_PASSWORD: ${{ secrets.VERA_KEYSTORE_PASSWORD }}
           VERA_KEY_ALIAS: ${{ secrets.VERA_KEY_ALIAS }}
           VERA_KEY_PASSWORD: ${{ secrets.VERA_KEY_PASSWORD }}
-        run: ./gradlew :app:assembleRelease --stacktrace
+        run: ./gradlew :app:assembleRelease :app:bundleRelease --stacktrace
 
-      - name: Verify the APK is signed
+      - name: Verify signatures and stage versioned artifacts
         run: |
-          apksigner="$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)"
-          "$apksigner" verify --print-certs app/build/outputs/apk/release/app-release.apk
+          apk=app/build/outputs/apk/release/app-release.apk
+          aab=app/build/outputs/bundle/release/app-release.aab
 
-      - name: Upload signed APK
+          # APK: v2/v3 scheme — verify with apksigner. AAB: jar-signed — jarsigner.
+          apksigner="$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)"
+          "$apksigner" verify --print-certs "$apk"
+          jarsigner -verify "$aab" | grep -q "jar verified" \
+            && echo "AAB: jar verified" \
+            || { echo "::error::AAB signature not verified" >&2; exit 1; }
+
+          # Name assets after the tag (or ref) so downloads are self-describing.
+          ver="${GITHUB_REF_NAME}"
+          mkdir -p dist
+          cp "$apk" "dist/vera-video-${ver}.apk"
+          cp "$aab" "dist/vera-video-${ver}.aab"
+          ls -la dist
+
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: vera-video-release-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: vera-video-release
+          path: dist/*
           if-no-files-found: error
+
+      - name: Attach to GitHub Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ver="${GITHUB_REF_NAME}"
+          # Create the release if it doesn't exist yet, then (re)upload assets.
+          gh release view "$ver" >/dev/null 2>&1 \
+            || gh release create "$ver" --title "$ver" --generate-notes
+          gh release upload "$ver" "dist/vera-video-${ver}.apk" "dist/vera-video-${ver}.aab" --clobber
 
       - name: Clean up keystore
         if: always()
