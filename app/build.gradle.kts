@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     // No `kotlin.android`: AGP 9 compiles Kotlin itself (built-in Kotlin support).
     alias(libs.plugins.android.application)
@@ -27,6 +29,32 @@ android {
         buildConfig = true
     }
 
+    signingConfigs {
+        // Credentials come from a gitignored keystore.properties (local dev) or,
+        // failing that, environment variables (CI). The config is only registered
+        // when all four are present, so a checkout without the keystore — CI that
+        // hasn't injected secrets, a fresh clone — still builds; its release APK
+        // is simply left unsigned rather than failing configuration.
+        val keystorePropertiesFile = rootProject.file("keystore.properties")
+        val props = Properties().apply {
+            if (keystorePropertiesFile.exists()) {
+                keystorePropertiesFile.inputStream().use { load(it) }
+            }
+        }
+        val storePath = props.getProperty("storeFile") ?: System.getenv("VERA_KEYSTORE_FILE")
+        val storePw = props.getProperty("storePassword") ?: System.getenv("VERA_KEYSTORE_PASSWORD")
+        val alias = props.getProperty("keyAlias") ?: System.getenv("VERA_KEY_ALIAS")
+        val keyPw = props.getProperty("keyPassword") ?: System.getenv("VERA_KEY_PASSWORD")
+        if (storePath != null && storePw != null && alias != null && keyPw != null) {
+            create("release") {
+                storeFile = rootProject.file(storePath)
+                storePassword = storePw
+                keyAlias = alias
+                keyPassword = keyPw
+            }
+        }
+    }
+
     buildTypes {
         debug {
             // Point at a locally running `wrangler dev` from an emulator:
@@ -34,10 +62,16 @@ android {
             buildConfigField("String", "CATALOG_BASE_URL", "\"${catalogBaseUrl()}\"")
         }
         release {
+            // Null when no credentials were provided (see signingConfigs above),
+            // leaving the release APK unsigned instead of breaking the build.
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "CATALOG_BASE_URL", "\"${catalogBaseUrl()}\"")
+            optimization {
+                enable = true
+            }
         }
     }
 
