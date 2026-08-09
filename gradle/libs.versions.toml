@@ -7,7 +7,7 @@ agp = "9.3.1"
 # registers generated sources via the `kotlin.sourceSets` DSL, which built-in
 # Kotlin rejects. These versions use the supported `android.sourceSets` path.
 kotlin = "2.4.10"
-ksp = "2.3.10"
+ksp = "2.3.11"
 hilt = "2.60.1"
 
 # SDK levels. minSdk 26 gives native java.time and mandatory notification
