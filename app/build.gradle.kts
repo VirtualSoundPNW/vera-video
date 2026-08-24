@@ -134,6 +134,18 @@ tasks.withType<Test>().configureEach {
     systemProperty("user.home", spaceFreeUserHome.get())
 }
 
+/**
+ * AGP's Unified Test Platform (used only when running instrumented tests, e.g.
+ * `connectedDebugAndroidTest`) pulls in Netty 4.1.110.Final transitively via
+ * gRPC. That version is affected by a CORS Vary-header cache-poisoning
+ * advisory (GHSA fixed in 4.1.137.Final). Netty keeps the 4.1.x line binary
+ * compatible, so force the patched version everywhere it shows up rather than
+ * waiting on AGP to bump its own pin.
+ */
+configurations.all {
+    resolutionStrategy.force("io.netty:netty-codec-http:4.1.137.Final")
+}
+
 /** Read from gradle.properties so the backend URL is not hardcoded in source. */
 fun catalogBaseUrl(): String =
     (project.findProperty("vera.catalog.baseUrl") as String?)?.takeIf { it.isNotBlank() }
