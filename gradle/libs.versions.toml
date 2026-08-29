@@ -2,7 +2,7 @@
 # AGP 9 has built-in Kotlin support: it applies the Kotlin Gradle Plugin itself,
 # so `org.jetbrains.kotlin.android` must NOT be applied here. AGP 9 is required
 # rather than optional — Hilt's Gradle plugin refuses to load on AGP < 9.
-agp = "9.3.1"
+agp = "9.3.2"
 # Newer than the KGP/KSP that AGP 9.3 bundles (2.2.10 / 2.2.10-2.0.2): that KSP
 # registers generated sources via the `kotlin.sourceSets` DSL, which built-in
 # Kotlin rejects. These versions use the supported `android.sourceSets` path.

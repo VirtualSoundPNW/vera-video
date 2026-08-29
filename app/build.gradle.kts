@@ -143,7 +143,7 @@ tasks.withType<Test>().configureEach {
  * waiting on AGP to bump its own pin.
  */
 configurations.all {
-    resolutionStrategy.force("io.netty:netty-codec-http:4.1.137.Final")
+    resolutionStrategy.force("io.netty:netty-codec-http:4.2.17.Final")
 }
 
 /** Read from gradle.properties so the backend URL is not hardcoded in source. */
