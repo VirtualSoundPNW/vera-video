@@ -137,13 +137,19 @@ tasks.withType<Test>().configureEach {
 /**
  * AGP's Unified Test Platform (used only when running instrumented tests, e.g.
  * `connectedDebugAndroidTest`) pulls in Netty 4.1.110.Final transitively via
- * gRPC. That version is affected by a CORS Vary-header cache-poisoning
- * advisory (GHSA fixed in 4.1.137.Final). Netty keeps the 4.1.x line binary
- * compatible, so force the patched version everywhere it shows up rather than
- * waiting on AGP to bump its own pin.
+ * gRPC. That version is affected by several advisories fixed in later 4.1.x
+ * releases (CORS Vary-header cache poisoning, Bzip2/Lz4 decoder resource
+ * exhaustion, zip-bomb DoS). `netty-codec-http` and `netty-codec` are
+ * separate Maven coordinates, so Gradle resolves each independently and
+ * forcing one does not bump the other. Netty keeps the 4.1.x line binary
+ * compatible, so force the patched version everywhere both show up rather
+ * than waiting on AGP to bump its own pin.
  */
 configurations.all {
-    resolutionStrategy.force("io.netty:netty-codec-http:4.1.137.Final")
+    resolutionStrategy.force(
+        "io.netty:netty-codec-http:4.1.137.Final",
+        "io.netty:netty-codec:4.1.137.Final",
+    )
 }
 
 /** Read from gradle.properties so the backend URL is not hardcoded in source. */
