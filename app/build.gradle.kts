@@ -147,8 +147,8 @@ tasks.withType<Test>().configureEach {
  */
 configurations.all {
     resolutionStrategy.force(
-        "io.netty:netty-codec-http:4.1.137.Final",
-        "io.netty:netty-codec:4.1.137.Final",
+        "io.netty:netty-codec-http:4.2.17.Final",
+        "io.netty:netty-codec:4.2.17.Final",
     )
 }
 
