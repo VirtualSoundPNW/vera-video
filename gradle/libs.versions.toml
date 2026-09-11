@@ -6,7 +6,7 @@ agp = "9.4.0"
 # Newer than the KGP/KSP that AGP 9.3 bundles (2.2.10 / 2.2.10-2.0.2): that KSP
 # registers generated sources via the `kotlin.sourceSets` DSL, which built-in
 # Kotlin rejects. These versions use the supported `android.sourceSets` path.
-kotlin = "2.4.10"
+kotlin = "2.4.20"
 ksp = "2.3.11"
 hilt = "2.60.1"
 
@@ -31,7 +31,7 @@ okhttp = "5.5.0"
 kotlinxSerialization = "1.11.0"
 retrofitSerializationConverter = "1.0.0"
 coroutines = "1.11.0"
-coil = "3.6.1"
+coil = "3.6.2"
 # The official YouTube Android Player API is defunct; this is the maintained
 # IFrame-player wrapper and the ToS-compliant way to embed playback.
 youtubePlayer = "13.0.0"
