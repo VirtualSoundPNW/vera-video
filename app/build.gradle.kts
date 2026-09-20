@@ -130,8 +130,29 @@ val spaceFreeUserHome: Provider<String> = run {
     }
 }
 
+/**
+ * Robolectric 4.17 added SDK 37 support, whose `ApplicationSharedMemory` shadow
+ * reflectively reaches into `jdk.internal.access.SharedSecrets` to fake a raw
+ * FileDescriptor. JDK 17+'s module system hides that package from the test
+ * JVM's unnamed module by default, so every test fails with
+ * `IllegalAccessException: ... module java.base does not export
+ * jdk.internal.access`. These are the same `--add-opens` flags Robolectric
+ * applies to its own test suite (see `TestTaskConfiguration.kt` in the
+ * Robolectric repo) to expose the JDK internals its sandbox depends on.
+ */
 tasks.withType<Test>().configureEach {
     systemProperty("user.home", spaceFreeUserHome.get())
+    jvmArgs(
+        "--add-opens=java.base/java.lang=ALL-UNNAMED",
+        "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+        "--add-opens=java.base/java.io=ALL-UNNAMED",
+        "--add-opens=java.base/java.net=ALL-UNNAMED",
+        "--add-opens=java.base/java.nio=ALL-UNNAMED",
+        "--add-opens=java.base/java.security=ALL-UNNAMED",
+        "--add-opens=java.base/java.text=ALL-UNNAMED",
+        "--add-opens=java.base/java.util=ALL-UNNAMED",
+        "--add-opens=java.base/jdk.internal.access=ALL-UNNAMED",
+    )
 }
 
 /**
