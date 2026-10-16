@@ -6,7 +6,7 @@ agp = "9.4.1"
 # Newer than the KGP/KSP that AGP 9.3 bundles (2.2.10 / 2.2.10-2.0.2): that KSP
 # registers generated sources via the `kotlin.sourceSets` DSL, which built-in
 # Kotlin rejects. These versions use the supported `android.sourceSets` path.
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 ksp = "2.3.12"
 hilt = "2.60.1"
 
