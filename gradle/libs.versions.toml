@@ -2,12 +2,12 @@
 # AGP 9 has built-in Kotlin support: it applies the Kotlin Gradle Plugin itself,
 # so `org.jetbrains.kotlin.android` must NOT be applied here. AGP 9 is required
 # rather than optional — Hilt's Gradle plugin refuses to load on AGP < 9.
-agp = "9.5.0"
+agp = "9.5.1"
 # Newer than the KGP/KSP that AGP 9.3 bundles (2.2.10 / 2.2.10-2.0.2): that KSP
 # registers generated sources via the `kotlin.sourceSets` DSL, which built-in
 # Kotlin rejects. These versions use the supported `android.sourceSets` path.
 kotlin = "2.4.21"
-ksp = "2.3.12"
+ksp = "2.3.13"
 hilt = "2.60.1"
 
 # SDK levels. minSdk 26 gives native java.time and mandatory notification
@@ -34,7 +34,7 @@ coroutines = "1.11.0"
 coil = "3.6.3"
 # The official YouTube Android Player API is defunct; this is the maintained
 # IFrame-player wrapper and the ToS-compliant way to embed playback.
-youtubePlayer = "13.0.0"
+youtubePlayer = "13.1.0"
 
 junit = "4.13.2"
 turbine = "1.2.1"
