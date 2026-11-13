@@ -50,7 +50,7 @@ mockwebserver = "5.5.1"
 # every app configuration resolve a release patched for GHSA-xxph-c9ww-hj94
 # (fixed in 33.7.2). Dependabot's security updater can't bump a transitive-only
 # dependency, but its weekly version updates do bump this entry.
-guava = "33.7.2-jre"
+guava = "33.8.0-jre"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
